@@ -1,3 +1,36 @@
+type Message =
+   record {
+             id: nat64;
+             title: text;
+             body: text;
+             attachment_url: text;
+             created_at: nat64;
+             updated_at: opt nat64;
+   };
+
+type MessagePayload = 
+        record{
+            title: text;
+            body: text;
+            attachment_url: text;
+        };
+
+
+type Error =
+       variant{
+         NotFound: record { msg: text};
+       };
+
+type Result = variant {
+    Ok: Message; 
+    Err: Error;
+    };
+
+
+
 service : {
-    "greet": (text) -> (text) query;
+    "get_message": (nat64) -> (Result) query;
+    "add_message": (MessagePayload) -> (opt Message);
+    "update_message": (nat64, MessagePayload) -> (Result);
+    "delete_message": (nat64) -> (Result);
 }
